@@ -6,7 +6,7 @@ A chip library for Angular
 
 A demo can be found [here](https://jaspero.co/resources/projects/ng-confirmations)
 
-## Installation
+## Installation Quanode
 
 To install this library, run:
 
