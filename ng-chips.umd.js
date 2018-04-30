@@ -16,7 +16,7 @@ var ChipsComponent = (function () {
         this.type = 'text';
         this.showAdd = true;
         this.duplicates = false;
-        this.chip = '';
+        this.chip = {name:''};
         this.propagateChange = function (_) { };
     }
     /**
@@ -38,13 +38,15 @@ var ChipsComponent = (function () {
      */
     function (event) {
         if (event.keyCode === 13) {
+			// this.chip.name = event.target.value;
             this.add();
         }
-        else if (event.keyCode === 8 && this.selected.length && this.chip === '') {
+        else if (event.keyCode === 8 && this.selected.length && this.chip.name === '') {
             this.remove(this.selected.length - 1);
         }
         else {
-            this.chip = event.target.value;
+			
+            this.chip.name = event.target.value;
         }
     };
     /**
@@ -54,11 +56,12 @@ var ChipsComponent = (function () {
      * @return {?}
      */
     function () {
-        if (!this.chip || !this.duplicates && this.selected.indexOf(this.chip) !== -1) {
+       // if (!this.chip || !this.duplicates && this.selected.indexOf(this.chip) !== -1) {
+		if (!this.chip || !this.duplicates && this.selected.findIndex(c => c.name === this.chip.name) !== -1) {
             return;
         }
         this.selected.push(this.chip);
-        this.chip = '';
+        this.chip = {name:''};
         this.propagateChange(this.selected);
         this.selectedChange.emit(this.selected);
     };
@@ -71,6 +74,9 @@ var ChipsComponent = (function () {
      * @return {?}
      */
     function (index) {
+
+		if (this.selected[index].removable == false)
+			return;
         this.selected.splice(index, 1);
         this.propagateChange(this.selected);
         this.selectedChange.emit(this.selected);
@@ -112,8 +118,8 @@ var ChipsComponent = (function () {
     ChipsComponent.decorators = [
         { type: core.Component, args: [{
                     selector: 'jaspero-chips',
-                    template: "<span class=\"chip\" *ngFor=\"let item of selected; let i = index\" (click)=\"remove(i)\"> {{item}} </span> <input class=\"chip-input\" name=\"chips\" [type]=\"type\" [value]=\"chip\" (keyup)=\"addOnEnter($event)\" #inp (focus)=\"isFocused = true\" (focusout)=\"isFocused = false\"> <!--<button *ngIf=\"showAdd\" (click)=\"add()\">Add</button>-->",
-                    styles: ["jaspero-chips { display: block; border: 1px solid #e9e9e9; border-radius: 10px; padding: 5px 10px; } jaspero-chips .chip-input { height: 32px; outline: none; padding: 0; display: inline-block; border: none; background: none; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); transition-property: font-size; color: rgba(0, 0, 0, 0.54); font-family: inherit; line-height: 32px; width: 128px; font-size: 16px; }.chip { height: 32px; padding: 0 15px; display: inline-block; border-radius: 32px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); font-size: 13px; line-height: 32px; white-space: nowrap; position: relative; margin-right: 8px; margin-bottom: 4px; background-color: #e9e9e9;padding-right:0; color: #0093c1; user-select: none; -webkit-user-select: none; cursor: pointer; overflow:hidden} jaspero-chips .chip:hover { background: #e9e9e9; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); } /*button { position: absolute; background: #bcc987; right: 0; border: none; top: 0; height: 100%; color: #212529; cursor: pointer; }*/  .chip::after { content: 'x';margin-left:5px;  font-size:14px; color:white; background-color: #0093c1; padding: 10px 7px; text-align:center; vertical-align:middle }"],
+                    template: "<span class=\"chip\" [ngClass]=\"{'chip-disabled':item.removable == false}\" *ngFor=\"let item of selected; let i = index\" (click)=\"remove(i)\"> {{item.name}} </span> <input class=\"chip-input\" name=\"chips\" [type]=\"type\" [value]=\"chip.name\" (keyup)=\"addOnEnter($event)\" #inp (focus)=\"isFocused = true\" (focusout)=\"isFocused = false\"> <!--<button *ngIf=\"showAdd\" (click)=\"add()\">Add</button>-->",
+                    styles: ["jaspero-chips { display: block; border: 1px solid #e9e9e9; border-radius: 10px; padding: 5px 10px; } jaspero-chips .chip-input { height: 32px; outline: none; padding: 0; display: inline-block; border: none; background: none; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); transition-property: font-size; color: rgba(0, 0, 0, 0.54); font-family: inherit; line-height: 32px; width: 128px; font-size: 16px; } .chip-disabled{ opacity:.5;} jaspero-chips .chip-disabled:hover{cursor: auto !important;} .chip { height: 32px; padding: 0 15px; display: inline-block; border-radius: 32px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); font-size: 13px; line-height: 32px; white-space: nowrap; position: relative; margin-right: 8px; margin-bottom: 4px; background-color: #e9e9e9;padding-right:0; color: #0093c1; user-select: none; -webkit-user-select: none; cursor: pointer; overflow:hidden} jaspero-chips .chip:hover { background: #e9e9e9; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); } /*button { position: absolute; background: #bcc987; right: 0; border: none; top: 0; height: 100%; color: #212529; cursor: pointer; }*/  .chip::after { content: 'x';margin-left:5px;  font-size:14px; color:white; background-color: #0093c1; padding: 10px 7px; text-align:center; vertical-align:middle }"],
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     providers: [{
