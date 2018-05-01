@@ -32,11 +32,13 @@ var ChipsComponent = (function () {
      * @param {?} event
      * @return {?}
      */
+	 
     ChipsComponent.prototype.addOnEnter = /**
      * @param {?} event
      * @return {?}
      */
     function (event) {
+			
         if (event.keyCode === 13) {
 			// this.chip.name = event.target.value;
             this.add();
@@ -56,6 +58,7 @@ var ChipsComponent = (function () {
      * @return {?}
      */
     function () {
+	
        // if (!this.chip || !this.duplicates && this.selected.indexOf(this.chip) !== -1) {
 		if (!this.chip || !this.duplicates && this.selected.findIndex(c => c.name === this.chip.name) !== -1) {
             return;
@@ -64,7 +67,20 @@ var ChipsComponent = (function () {
         this.chip = {name:''};
         this.propagateChange(this.selected);
         this.selectedChange.emit(this.selected);
+	
     };
+	ChipsComponent.prototype.clear = 
+	 /**
+     * @param {?} 
+     * @return {?}
+     */
+    function () 
+	{
+		var els = document.getElementsByName('chips');
+		for (var i = 0; i < els.length;i++)
+			els[i].value = "";
+		console.log('after adding',els.length);
+	}
     /**
      * @param {?} index
      * @return {?}

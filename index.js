@@ -60,6 +60,18 @@ var ChipsComponent = (function () {
         this.propagateChange(this.selected);
         this.selectedChange.emit(this.selected);
     };
+	ChipsComponent.prototype.clear = 
+	 /**
+     * @param {?} 
+     * @return {?}
+     */
+    function () 
+	{
+		var els = document.getElementsByName('chips');
+		for (var i = 0; i < els.length;i++)
+			els[i].value = "";
+		console.log('after adding',els.length);
+	}
     /**
      * @param {?} index
      * @return {?}
