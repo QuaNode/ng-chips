@@ -58,7 +58,7 @@ var ChipsComponent = (function () {
      */
     function () {
        // if (!this.chip || !this.duplicates && this.selected.indexOf(this.chip) !== -1) {
-		if (!this.chip || !this.duplicates || this.chip.name=='' && this.selected.findIndex(c => c.name === this.chip.name) !== -1) {
+		if (!this.chip || this.chip.name=='' || (!this.duplicates && this.selected.findIndex(c => c.name === this.chip.name) !== -1)) {
             return;
         }
         this.selected.push(this.chip);
