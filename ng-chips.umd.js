@@ -17,6 +17,8 @@ var ChipsComponent = (function () {
         this.type = 'text';
         this.showAdd = false;
         this.duplicates = false;
+        this.editable = false;
+        this.removable = true;
         this.chip = {name:''};
         this.propagateChange = function (_) { };
     }
