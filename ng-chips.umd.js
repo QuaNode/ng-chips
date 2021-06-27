@@ -28,27 +28,25 @@ var ChipsComponent = (function () {
     ChipsComponent.prototype.addFocus = /**
      * @return {?}
      */
-    function () {
+    function ()
+    {
         this.inpEl.nativeElement.focus();
     };
     /**
      * @param {?} event
      * @return {?}
      */
-
     ChipsComponent.prototype.addOnEnter = /**
      * @param {?} event
      * @return {?}
      */
-    function (event) {
+    function (event)
+    {
         if (event.keyCode === 13) {
-            // this.chip.name = event.target.value;
             this.add();
-        }
-        else if (event.keyCode === 8 && this.selected.length && this.chip.name === '') {
+        } else if (event.keyCode === 8 && this.selected.length && this.chip.name === '') {
             this.remove(this.selected.length - 1);
-        }
-        else {
+        } else {
 
             this.chip.name = event.target.value;
         }
@@ -59,8 +57,8 @@ var ChipsComponent = (function () {
     ChipsComponent.prototype.add = /**
      * @return {?}
      */
-    function () {
-       // if (!this.chip || !this.duplicates && this.selected.indexOf(this.chip) !== -1) {
+    function ()
+    {
         if (!this.chip || this.chip.name=='' || (!this.duplicates && this.selected.findIndex(c => c.name === this.chip.name) !== -1)) {
             return;
         }
@@ -90,8 +88,8 @@ var ChipsComponent = (function () {
      * @param {?} index
      * @return {?}
      */
-    function (index) {
-
+    function (index)
+    {
         if (this.selected[index].removable == false)
             return;
         this.selected.splice(index, 1);
@@ -106,11 +104,11 @@ var ChipsComponent = (function () {
      * @param {?} index
      * @return {?}
      */
-    function (index) {
-
+    function (index)
+    {
         if (this.selected[index].editable == false)
             return;
-        this.editClicked.emit(this.selected);
+        this.editClicked.emit(this.selected[index]);
     };
     /*
      Form Control Value Accessor
@@ -123,7 +121,8 @@ var ChipsComponent = (function () {
      * @param {?} value
      * @return {?}
      */
-    function (value) {
+    function (value)
+    {
         if (value !== undefined) {
             this.selected = value;
         }
@@ -136,7 +135,8 @@ var ChipsComponent = (function () {
      * @param {?} fn
      * @return {?}
      */
-    function (fn) {
+    function (fn)
+    {
         this.propagateChange = fn;
     };
     /**
